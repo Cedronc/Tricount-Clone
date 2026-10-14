@@ -73,7 +73,7 @@ if (app.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>("Byp
         {
             new Claim("sub", "dev_user_123"), // Mock Clerk userId
             new Claim("name", "Developer")
-        }));
+        }, "dev-auth"));
         await next();
     });
 }

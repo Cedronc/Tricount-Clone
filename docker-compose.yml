@@ -26,6 +26,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./TricountBackend/appsettings.Development.json:/app/appsettings.Development.json:ro
+    command: dotnet TricountBackend.dll
 
 volumes:
   postgres_data:

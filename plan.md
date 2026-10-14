@@ -16,37 +16,28 @@
   - [x] Mark repayments as completed
 - [x] **User Controller**
   - [x] Clerk integration (validate JWT, sync users)
-  - [x] User profile management
+  - [x] User profile management (auth bypass in development)
 
 ### Business Logic
 - [ ] **Split Service**
   - [ ] Equal/unequal split calculations
   - [ ] Rounding logic for splits
-- [ ] **Repayment Service**
+- [x] **Repayment Service**
   - [x] Greedy algorithm for repayment suggestions
   - [ ] Conflict resolution for concurrent repayments
-- [ ] **Currency Service**
+- [x] **Currency Service**
   - [x] Fetch exchange rates (ExchangeRate-API)
   - [ ] Store rates with expenses
 
-### Business Logic
-- [ ] **Split Service**
-  - [ ] Equal/unequal split calculations
-  - [ ] Rounding logic for splits
-- [ ] **Repayment Service**
-  - [ ] Greedy algorithm for repayment suggestions
-  - [ ] Conflict resolution for concurrent repayments
-- [ ] **Currency Service**
-  - [ ] Fetch exchange rates (ExchangeRate-API)
-  - [ ] Store rates with expenses
-
-### Infrastructure
+### Infrastructure ✅
 - [x] **Clerk Auth**
   - [x] JWT validation middleware
+  - [x] Development auth bypass (`BypassAuth: true`)
   - [ ] User role management (admin/member)
 - [x] **Docker Compose**
   - [x] PostgreSQL + backend services
   - [x] Health checks and environment variables
+  - [x] Runtime migrations (`dotnet ef database update`)
 - [ ] **Offline Sync**
   - [ ] Queue actions when offline
   - [ ] Conflict resolution on reconnect
@@ -111,6 +102,6 @@
 ---
 
 ## Next Steps
-1. **Backend**: Implement `TricountController` (delegate to agent).
-2. **Commit**: After each controller/service is complete.
-3. **Frontend**: Scaffold Angular app (delegate to agent).
+1. **Frontend**: Scaffold Angular app with Clerk integration.
+2. **Testing**: Verify offline sync and conflict resolution.
+3. **Deployment**: Configure production auth (Clerk) and hosting.

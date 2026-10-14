@@ -13,14 +13,7 @@ RUN dotnet publish "TricountBackend.csproj" -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=publish /app/publish .
-
-# Environment Variables
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV DOTNET_USE_POLLING_FILE_WATCHER=1
-
-# Expose Port
-EXPOSE 80
-EXPOSE 443
-
-# Entry Point
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "TricountBackend.dll"]
