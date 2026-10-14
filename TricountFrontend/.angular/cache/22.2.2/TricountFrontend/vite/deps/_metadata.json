@@ -1,0 +1,46 @@
+{
+  "hash": "c675ccff",
+  "configHash": "87770446",
+  "lockfileHash": "8437e1a5",
+  "browserHash": "0c2dc28b",
+  "optimized": {
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "6aba8681",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "430313c5",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "70cb8674",
+      "needsInterop": false
+    },
+    "ngx-clerk": {
+      "src": "../../../../../../node_modules/ngx-clerk/fesm2022/ngx-clerk.mjs",
+      "file": "ngx-clerk.js",
+      "fileHash": "5d283a40",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "core-BtH_Lmnj": {
+      "file": "core-BtH_Lmnj.js",
+      "isDynamicEntry": false
+    },
+    "platform-browser-BxQWy1B7": {
+      "file": "platform-browser-BxQWy1B7.js",
+      "isDynamicEntry": false
+    },
+    "router-p84HX-N0": {
+      "file": "router-p84HX-N0.js",
+      "isDynamicEntry": false
+    }
+  }
+}
