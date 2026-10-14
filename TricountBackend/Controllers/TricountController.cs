@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TricountBackend.Data;
 using TricountBackend.DTOs;
+using TricountBackend.DTOs;
 using TricountBackend.Models;
 
 namespace TricountBackend.Controllers
@@ -31,14 +32,14 @@ namespace TricountBackend.Controllers
         /// </summary>
         /// <returns>List of tricounts.</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<TricountDto>), 200)]
-        public async Task<ActionResult<List<TricountDto>>> GetTricounts()
+        [ProducesResponseType(typeof(List<TricountDTO>), 200)]
+        public async Task<ActionResult<List<TricountDTO>>> GetTricounts()
         {
             var userId = User.FindFirstValue("sub");
             var tricounts = await _db.Tricounts
                 .Include(t => t.Users)
                 .Where(t => t.Users.Any(u => u.UserId == userId) && !t.Archived)
-                .Select(t => new TricountDto(
+                .Select(t => new TricountDTO(
                     t.Id,
                     t.Name,
                     t.Currency,
@@ -57,10 +58,10 @@ namespace TricountBackend.Controllers
         /// <param name="id">Tricount ID.</param>
         /// <returns>Tricount details.</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(TricountDto), 200)]
+        [ProducesResponseType(typeof(TricountDTO), 200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<TricountDto>> GetTricount(Guid id)
+        public async Task<ActionResult<TricountDTO>> GetTricount(Guid id)
         {
             var userId = User.FindFirstValue("sub");
             var tricount = await _db.Tricounts
@@ -73,7 +74,7 @@ namespace TricountBackend.Controllers
             if (!tricount.Users.Any(u => u.UserId == userId))
                 return Forbid();
 
-            var dto = new TricountDto(
+            var dto = new TricountDTO(
                 tricount.Id,
                 tricount.Name,
                 tricount.Currency,
@@ -91,9 +92,9 @@ namespace TricountBackend.Controllers
         /// <param name="dto">Tricount details.</param>
         /// <returns>Created tricount.</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(TricountDto), 201)]
+        [ProducesResponseType(typeof(TricountDTO), 201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<TricountDto>> CreateTricount([FromBody] CreateTricountDto dto)
+        public async Task<ActionResult<TricountDTO>> CreateTricount([FromBody] CreateTricountDTO dto)
         {
             var userId = User.FindFirstValue("sub");
             var currentUser = await _db.Users.FirstOrDefaultAsync(u => u.UserId == userId);
@@ -118,7 +119,7 @@ namespace TricountBackend.Controllers
             _db.Tricounts.Add(tricount);
             await _db.SaveChangesAsync();
 
-            var responseDto = new TricountDto(
+            var responseDto = new TricountDTO(
                 tricount.Id,
                 tricount.Name,
                 tricount.Currency,
@@ -137,11 +138,11 @@ namespace TricountBackend.Controllers
         /// <param name="dto">Updated tricount details.</param>
         /// <returns>Updated tricount.</returns>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(TricountDto), 200)]
+        [ProducesResponseType(typeof(TricountDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<TricountDto>> UpdateTricount(Guid id, [FromBody] UpdateTricountDto dto)
+        public async Task<ActionResult<TricountDTO>> UpdateTricount(Guid id, [FromBody] UpdateTricountDTO dto)
         {
             var userId = User.FindFirstValue("sub");
             var tricount = await _db.Tricounts
@@ -159,7 +160,7 @@ namespace TricountBackend.Controllers
 
             await _db.SaveChangesAsync();
 
-            var responseDto = new TricountDto(
+            var responseDto = new TricountDTO(
                 tricount.Id,
                 tricount.Name,
                 tricount.Currency,
@@ -206,11 +207,11 @@ namespace TricountBackend.Controllers
         /// <param name="userId">User ID to add.</param>
         /// <returns>Updated tricount.</returns>
         [HttpPost("{id}/users")]
-        [ProducesResponseType(typeof(TricountDto), 200)]
+        [ProducesResponseType(typeof(TricountDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<TricountDto>> AddUserToTricount(Guid id, [FromBody] Guid userId)
+        public async Task<ActionResult<TricountDTO>> AddUserToTricount(Guid id, [FromBody] Guid userId)
         {
             var currentUserId = User.FindFirstValue("sub");
             var tricount = await _db.Tricounts
@@ -232,7 +233,7 @@ namespace TricountBackend.Controllers
 
             await _db.SaveChangesAsync();
 
-            var responseDto = new TricountDto(
+            var responseDto = new TricountDTO(
                 tricount.Id,
                 tricount.Name,
                 tricount.Currency,
@@ -251,11 +252,11 @@ namespace TricountBackend.Controllers
         /// <param name="userId">User ID to remove.</param>
         /// <returns>Updated tricount.</returns>
         [HttpDelete("{id}/users/{userId}")]
-        [ProducesResponseType(typeof(TricountDto), 200)]
+        [ProducesResponseType(typeof(TricountDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<TricountDto>> RemoveUserFromTricount(Guid id, Guid userId)
+        public async Task<ActionResult<TricountDTO>> RemoveUserFromTricount(Guid id, Guid userId)
         {
             var currentUserId = User.FindFirstValue("sub");
             var tricount = await _db.Tricounts
@@ -275,7 +276,7 @@ namespace TricountBackend.Controllers
             tricount.Users.Remove(user);
             await _db.SaveChangesAsync();
 
-            var responseDto = new TricountDto(
+            var responseDto = new TricountDTO(
                 tricount.Id,
                 tricount.Name,
                 tricount.Currency,

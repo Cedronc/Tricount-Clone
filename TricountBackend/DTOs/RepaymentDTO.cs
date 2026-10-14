@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace TricountBackend.DTOs
 {
-    public record RepaymentSuggestionDto(
+    public record RepaymentSuggestionDTO(
         Guid FromId,
         Guid ToId,
         decimal Amount
     );
 
-    public record CreateRepaymentDto(
+    public record CreateRepaymentDTO(
         Guid FromId,
         Guid ToId,
         decimal Amount
     );
 
-    public record RepaymentDto(
+    public record RepaymentDTO(
         Guid Id,
         Guid TricountId,
         Guid FromId,

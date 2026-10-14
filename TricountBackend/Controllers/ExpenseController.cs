@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TricountBackend.Data;
 using TricountBackend.DTOs;
+using TricountBackend.DTOs;
 using TricountBackend.Models;
 using TricountBackend.Services;
 
@@ -27,10 +28,10 @@ namespace TricountBackend.Controllers
         }
 
         [HttpGet("tricounts/{tricountId}/expenses")]
-        [ProducesResponseType(typeof(List<ExpenseDto>), 200)]
+        [ProducesResponseType(typeof(List<ExpenseDTO>), 200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<List<ExpenseDto>>> GetExpenses(Guid tricountId)
+        public async Task<ActionResult<List<ExpenseDTO>>> GetExpenses(Guid tricountId)
         {
             var userId = User.FindFirstValue("sub") ?? throw new InvalidOperationException("User ID claim not found");
             var tricount = await _db.Tricounts
@@ -48,7 +49,7 @@ namespace TricountBackend.Controllers
                 .Include(e => e.Splits)
                 .ToListAsync();
 
-            return expenses.Select(e => new ExpenseDto(
+            return expenses.Select(e => new ExpenseDTO(
                 e.Id,
                 e.TricountId,
                 e.Description,
@@ -57,16 +58,16 @@ namespace TricountBackend.Controllers
                 e.ExchangeRate,
                 e.PaidById,
                 e.CreatedAt,
-                e.Splits.Select(s => new ExpenseSplitDto(s.ParticipantId, s.Amount)).ToList()
+                e.Splits.Select(s => new ExpenseSplitDTO(s.ParticipantId, s.Amount)).ToList()
             )).ToList();
         }
 
         [HttpPost("tricounts/{tricountId}/expenses")]
-        [ProducesResponseType(typeof(ExpenseDto), 201)]
+        [ProducesResponseType(typeof(ExpenseDTO), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ExpenseDto>> CreateExpense(Guid tricountId, CreateExpenseDto dto)
+        public async Task<ActionResult<ExpenseDTO>> CreateExpense(Guid tricountId, CreateExpenseDTO dto)
         {
             var userId = User.FindFirstValue("sub") ?? throw new InvalidOperationException("User ID claim not found");
             var tricount = await _db.Tricounts
@@ -137,7 +138,7 @@ namespace TricountBackend.Controllers
             _db.Expenses.Add(expense);
             await _db.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, new ExpenseDto(
+            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, new ExpenseDTO(
                 expense.Id,
                 expense.TricountId,
                 expense.Description,
@@ -146,15 +147,15 @@ namespace TricountBackend.Controllers
                 expense.ExchangeRate,
                 expense.PaidById,
                 expense.CreatedAt,
-                expense.Splits.Select(s => new ExpenseSplitDto(s.ParticipantId, s.Amount)).ToList()
+                expense.Splits.Select(s => new ExpenseSplitDTO(s.ParticipantId, s.Amount)).ToList()
             ));
         }
 
         [HttpGet("expenses/{id}")]
-        [ProducesResponseType(typeof(ExpenseDto), 200)]
+        [ProducesResponseType(typeof(ExpenseDTO), 200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ExpenseDto>> GetExpense(Guid id)
+        public async Task<ActionResult<ExpenseDTO>> GetExpense(Guid id)
         {
             var userId = User.FindFirstValue("sub") ?? throw new InvalidOperationException("User ID claim not found");
             var expense = await _db.Expenses
@@ -169,7 +170,7 @@ namespace TricountBackend.Controllers
             if (!expense.Tricount.Users.Any(u => u.Id == Guid.Parse(userId)))
                 return Forbid();
 
-            return new ExpenseDto(
+            return new ExpenseDTO(
                 expense.Id,
                 expense.TricountId,
                 expense.Description,
@@ -178,16 +179,16 @@ namespace TricountBackend.Controllers
                 expense.ExchangeRate,
                 expense.PaidById,
                 expense.CreatedAt,
-                expense.Splits.Select(s => new ExpenseSplitDto(s.ParticipantId, s.Amount)).ToList()
+                expense.Splits.Select(s => new ExpenseSplitDTO(s.ParticipantId, s.Amount)).ToList()
             );
         }
 
         [HttpPut("expenses/{id}")]
-        [ProducesResponseType(typeof(ExpenseDto), 200)]
+        [ProducesResponseType(typeof(ExpenseDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ExpenseDto>> UpdateExpense(Guid id, UpdateExpenseDto dto)
+        public async Task<ActionResult<ExpenseDTO>> UpdateExpense(Guid id, UpdateExpenseDTO dto)
         {
             var userId = User.FindFirstValue("sub") ?? throw new InvalidOperationException("User ID claim not found");
             var expense = await _db.Expenses
@@ -248,7 +249,7 @@ namespace TricountBackend.Controllers
 
             await _db.SaveChangesAsync();
 
-            return new ExpenseDto(
+            return new ExpenseDTO(
                 expense.Id,
                 expense.TricountId,
                 expense.Description,
@@ -257,7 +258,7 @@ namespace TricountBackend.Controllers
                 expense.ExchangeRate,
                 expense.PaidById,
                 expense.CreatedAt,
-                expense.Splits.Select(s => new ExpenseSplitDto(s.ParticipantId, s.Amount)).ToList()
+                expense.Splits.Select(s => new ExpenseSplitDTO(s.ParticipantId, s.Amount)).ToList()
             );
         }
 

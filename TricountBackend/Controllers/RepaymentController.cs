@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TricountBackend.Data;
 using TricountBackend.DTOs;
+using TricountBackend.DTOs;
 using TricountBackend.Models;
 using TricountBackend.Services;
 
@@ -35,10 +36,10 @@ namespace TricountBackend.Controllers
         /// <param name="tricountId">Tricount ID.</param>
         /// <returns>List of repayment suggestions.</returns>
         [HttpGet("suggestions")]
-        [ProducesResponseType(typeof(List<RepaymentSuggestionDto>), 200)]
+        [ProducesResponseType(typeof(List<RepaymentSuggestionDTO>), 200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<List<RepaymentSuggestionDto>>> GetRepaymentSuggestions(Guid tricountId)
+        public async Task<ActionResult<List<RepaymentSuggestionDTO>>> GetRepaymentSuggestions(Guid tricountId)
         {
             var userId = User.FindFirstValue("sub");
             var tricount = await _db.Tricounts
@@ -62,11 +63,11 @@ namespace TricountBackend.Controllers
         /// <param name="dto">Repayment details.</param>
         /// <returns>Created repayment.</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(RepaymentDto), 201)]
+        [ProducesResponseType(typeof(RepaymentDTO), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<RepaymentDto>> CreateRepayment(Guid tricountId, [FromBody] CreateRepaymentDto dto)
+        public async Task<ActionResult<RepaymentDTO>> CreateRepayment(Guid tricountId, [FromBody] CreateRepaymentDTO dto)
         {
             var userId = User.FindFirstValue("sub");
             var tricount = await _db.Tricounts
@@ -90,7 +91,7 @@ namespace TricountBackend.Controllers
 
             var repayment = await _repaymentService.CreateRepaymentAsync(tricountId, dto.FromId, dto.ToId, dto.Amount);
 
-            var repaymentDto = new RepaymentDto(
+            var repaymentDto = new RepaymentDTO(
                 repayment.Id,
                 repayment.TricountId,
                 repayment.FromId,
@@ -110,11 +111,11 @@ namespace TricountBackend.Controllers
         /// <param name="id">Repayment ID.</param>
         /// <returns>Updated repayment.</returns>
         [HttpPut("~/repayments/{id}/complete")]
-        [ProducesResponseType(typeof(RepaymentDto), 200)]
+        [ProducesResponseType(typeof(RepaymentDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<RepaymentDto>> MarkRepaymentAsCompleted(Guid id)
+        public async Task<ActionResult<RepaymentDTO>> MarkRepaymentAsCompleted(Guid id)
         {
             var userId = User.FindFirstValue("sub");
             var repayment = await _db.Repayments
@@ -132,7 +133,7 @@ namespace TricountBackend.Controllers
             if (!success)
                 return BadRequest("Repayment is already completed.");
 
-            var repaymentDto = new RepaymentDto(
+            var repaymentDto = new RepaymentDTO(
                 repayment.Id,
                 repayment.TricountId,
                 repayment.FromId,
@@ -152,10 +153,10 @@ namespace TricountBackend.Controllers
         /// <param name="id">Repayment ID.</param>
         /// <returns>Repayment details.</returns>
         [HttpGet("~/repayments/{id}")]
-        [ProducesResponseType(typeof(RepaymentDto), 200)]
+        [ProducesResponseType(typeof(RepaymentDTO), 200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<RepaymentDto>> GetRepayment(Guid id)
+        public async Task<ActionResult<RepaymentDTO>> GetRepayment(Guid id)
         {
             var userId = User.FindFirstValue("sub");
             var repayment = await _db.Repayments
@@ -169,7 +170,7 @@ namespace TricountBackend.Controllers
             if (!repayment.Tricount.Users.Any(u => u.UserId == userId))
                 return Forbid();
 
-            var repaymentDto = new RepaymentDto(
+            var repaymentDto = new RepaymentDTO(
                 repayment.Id,
                 repayment.TricountId,
                 repayment.FromId,

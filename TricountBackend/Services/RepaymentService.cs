@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TricountBackend.Data;
 using TricountBackend.DTOs;
+using TricountBackend.DTOs;
 using TricountBackend.Models;
 
 namespace TricountBackend.Services
@@ -18,7 +19,7 @@ namespace TricountBackend.Services
             _db = db;
         }
 
-        public async Task<List<RepaymentSuggestionDto>> GetRepaymentSuggestionsAsync(Guid tricountId)
+        public async Task<List<RepaymentSuggestionDTO>> GetRepaymentSuggestionsAsync(Guid tricountId)
         {
             var expenses = await _db.Expenses
                 .Include(e => e.Splits)
@@ -56,7 +57,7 @@ namespace TricountBackend.Services
             var debtors = balances.Where(b => b.Value < 0).ToList();
             var creditors = balances.Where(b => b.Value > 0).ToList();
 
-            var suggestions = new List<RepaymentSuggestionDto>();
+            var suggestions = new List<RepaymentSuggestionDTO>();
 
             foreach (var debtor in debtors)
             {
@@ -69,7 +70,7 @@ namespace TricountBackend.Services
                     var amount = Math.Min(debtorBalance, creditor.Value);
                     if (amount > 0)
                     {
-                        suggestions.Add(new RepaymentSuggestionDto(
+                        suggestions.Add(new RepaymentSuggestionDTO(
                             debtor.Key,
                             creditor.Key,
                             amount

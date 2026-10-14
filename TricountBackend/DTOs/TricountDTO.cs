@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TricountBackend.DTOs
 {
-    public record TricountDto(
+    public record TricountDTO(
         Guid Id,
         string Name,
         string Currency,
@@ -12,13 +12,13 @@ namespace TricountBackend.DTOs
         List<Guid> UserIds
     );
 
-    public record CreateTricountDto(
+    public record CreateTricountDTO(
         string Name,
         string Currency,
         List<Guid> UserIds
     );
 
-    public record UpdateTricountDto(
+    public record UpdateTricountDTO(
         string Name,
         string Currency
     );

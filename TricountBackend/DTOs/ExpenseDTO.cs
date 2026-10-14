@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TricountBackend.DTOs
 {
-    public record ExpenseDto(
+    public record ExpenseDTO(
         Guid Id,
         Guid TricountId,
         string Description,
@@ -12,28 +12,28 @@ namespace TricountBackend.DTOs
         decimal? ExchangeRate,
         Guid PaidById,
         DateTime CreatedAt,
-        List<ExpenseSplitDto> Splits
+        List<ExpenseSplitDTO> Splits
     );
 
-    public record ExpenseSplitDto(
+    public record ExpenseSplitDTO(
         Guid ParticipantId,
         decimal Amount
     );
 
-    public record CreateExpenseDto(
+    public record CreateExpenseDTO(
         string Description,
         decimal Amount,
         string OriginalCurrency,
         Guid PaidById,
         List<Guid>? ParticipantIds,
-        List<ExpenseSplitDto>? CustomSplits
+        List<ExpenseSplitDTO>? CustomSplits
     );
 
-    public record UpdateExpenseDto(
+    public record UpdateExpenseDTO(
         string Description,
         decimal Amount,
         Guid PaidById,
         List<Guid>? ParticipantIds,
-        List<ExpenseSplitDto>? CustomSplits
+        List<ExpenseSplitDTO>? CustomSplits
     );
 }

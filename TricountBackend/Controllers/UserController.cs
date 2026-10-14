@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TricountBackend.Data;
 using TricountBackend.DTOs;
+using TricountBackend.DTOs;
 using TricountBackend.Models;
 
 namespace TricountBackend.Controllers
@@ -24,7 +25,7 @@ namespace TricountBackend.Controllers
         }
 
         [HttpGet("me")]
-        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
             var clerkUserId = User.FindFirstValue("sub");
             if (string.IsNullOrEmpty(clerkUserId))
@@ -41,18 +42,17 @@ namespace TricountBackend.Controllers
                 return NotFound();
             }
 
-            return new UserDto
-            {
-                Id = user.Id,
-                ClerkUserId = user.UserId,
-                Name = user.Name,
-                TricountIds = user.Tricounts.Select(t => t.Id).ToList()
-            };
+            return new UserDTO(
+                user.Id,
+                user.UserId,
+                user.Name,
+                user.Tricounts.Select(t => t.Id).ToList()
+            );
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<UserDto>> SyncUserFromClerk([FromBody] CreateUserDto dto)
+        public async Task<ActionResult<UserDTO>> SyncUserFromClerk([FromBody] CreateUserDTO dto)
         {
             if (string.IsNullOrEmpty(dto.ClerkUserId) || string.IsNullOrEmpty(dto.Name))
             {
@@ -80,7 +80,7 @@ namespace TricountBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUser(Guid id)
+        public async Task<ActionResult<UserDTO>> GetUser(Guid id)
         {
             var clerkUserId = User.FindFirstValue("sub");
             if (string.IsNullOrEmpty(clerkUserId))
@@ -102,17 +102,16 @@ namespace TricountBackend.Controllers
                 return Forbid();
             }
 
-            return new UserDto
-            {
-                Id = user.Id,
-                ClerkUserId = user.UserId,
-                Name = user.Name,
-                TricountIds = user.Tricounts.Select(t => t.Id).ToList()
-            };
+            return new UserDTO(
+                user.Id,
+                user.UserId,
+                user.Name,
+                user.Tricounts.Select(t => t.Id).ToList()
+            );
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserDto>> UpdateUser(Guid id, [FromBody] UpdateUserDto dto)
+        public async Task<ActionResult<UserDTO>> UpdateUser(Guid id, [FromBody] UpdateUserDTO dto)
         {
             var clerkUserId = User.FindFirstValue("sub");
             if (string.IsNullOrEmpty(clerkUserId))
@@ -135,13 +134,12 @@ namespace TricountBackend.Controllers
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
 
-            return new UserDto
-            {
-                Id = user.Id,
-                ClerkUserId = user.UserId,
-                Name = user.Name,
-                TricountIds = user.Tricounts?.Select(t => t.Id).ToList() ?? new List<Guid>()
-            };
+            return new UserDTO(
+                user.Id,
+                user.UserId,
+                user.Name,
+                user.Tricounts.Select(t => t.Id).ToList()
+            );
         }
     }
 }
