@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
 using TricountBackend.Data;
 
@@ -62,6 +63,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+// Bypass auth in development (for Swagger testing)
+if (app.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>("BypassAuth"))
+{
+    app.Use(async (ctx, next) =>
+    {
+        ctx.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim("sub", "dev_user_123"), // Mock Clerk userId
+            new Claim("name", "Developer")
+        }));
+        await next();
+    });
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
