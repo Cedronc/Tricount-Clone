@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TricountBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate_Net10 : Migration
+    public partial class InitialCreate_Stable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

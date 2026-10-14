@@ -5,7 +5,14 @@ namespace TricountBackend.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+            Tricounts = Set<Tricount>();
+            Participants = Set<Participant>();
+            Expenses = Set<Expense>();
+            ExpenseSplits = Set<ExpenseSplit>();
+            Repayments = Set<Repayment>();
+        }
 
         public DbSet<Tricount> Tricounts { get; set; }
         public DbSet<Participant> Participants { get; set; }

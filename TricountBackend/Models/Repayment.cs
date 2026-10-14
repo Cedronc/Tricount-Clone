@@ -12,17 +12,17 @@ namespace TricountBackend.Models
         [Required]
         public Guid TricountId { get; set; }
 
-        public Tricount Tricount { get; set; }
+        public required Tricount Tricount { get; set; }
 
         [Required]
         public Guid FromId { get; set; }
 
-        public Participant From { get; set; }
+        public required Participant From { get; set; }
 
         [Required]
         public Guid ToId { get; set; }
 
-        public Participant To { get; set; }
+        public required Participant To { get; set; }
 
         [Required]
         public decimal Amount { get; set; }

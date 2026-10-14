@@ -13,10 +13,10 @@ namespace TricountBackend.Models
         [Required]
         public Guid TricountId { get; set; }
 
-        public Tricount Tricount { get; set; }
+        public required Tricount Tricount { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public required string Description { get; set; }
 
         [Required]
         public decimal Amount { get; set; }
@@ -29,7 +29,7 @@ namespace TricountBackend.Models
         [Required]
         public Guid PaidById { get; set; }
 
-        public Participant PaidBy { get; set; }
+        public required Participant PaidBy { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

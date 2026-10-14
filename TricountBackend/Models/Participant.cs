@@ -4,22 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TricountBackend.Models
 {
-    public class ExpenseSplit
+    public class Participant
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public Guid ExpenseId { get; set; }
-
-        public Expense Expense { get; set; }
+        public required string UserId { get; set; } // Clerk User ID
 
         [Required]
-        public Guid ParticipantId { get; set; }
-
-        public Participant Participant { get; set; }
+        public required string Name { get; set; }
 
         [Required]
-        public decimal Amount { get; set; }
+        public Guid TricountId { get; set; }
+
+        public required Tricount Tricount { get; set; }
     }
 }

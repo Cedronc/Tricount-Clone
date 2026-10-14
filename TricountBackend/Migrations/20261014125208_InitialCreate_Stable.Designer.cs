@@ -12,15 +12,15 @@ using TricountBackend.Data;
 namespace TricountBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261014122845_InitialCreate_Net10")]
-    partial class InitialCreate_Net10
+    [Migration("20261014125208_InitialCreate_Stable")]
+    partial class InitialCreate_Stable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.0-preview.1.25081.1")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
