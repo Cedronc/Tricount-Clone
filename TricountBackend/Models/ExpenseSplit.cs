@@ -12,7 +12,7 @@ namespace TricountBackend.Models
         [Required]
         public Guid ExpenseId { get; set; }
 
-        public required Expense Expense { get; set; }
+        public Expense? Expense { get; set; }
 
         [Required]
         public Guid ParticipantId { get; set; }
