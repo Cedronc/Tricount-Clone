@@ -2,21 +2,32 @@
 
 ## Backend (C# .NET 8)
 
-### Core API
-- [ ] **Tricount Controller**
-  - [ ] CRUD endpoints for tricounts (`GET /tricounts`, `POST /tricounts`, etc.)
-  - [ ] Add/remove users from tricounts (N:M relationship)
-  - [ ] Archive/unarchive tricounts
-- [ ] **Expense Controller**
-  - [ ] CRUD endpoints for expenses (`GET /expenses`, `POST /expenses`, etc.)
-  - [ ] Support for equal/unequal splits
-  - [ ] Multi-currency support (fetch exchange rates)
-- [ ] **Repayment Controller**
-  - [ ] Suggest repayments (minimize transactions)
-  - [ ] Mark repayments as completed
-- [ ] **User Controller**
-  - [ ] Clerk integration (validate JWT, sync users)
-  - [ ] User profile management
+### Core API ✅
+- [x] **Tricount Controller**
+  - [x] CRUD endpoints for tricounts (`GET /tricounts`, `POST /tricounts`, etc.)
+  - [x] Add/remove users from tricounts (N:M relationship)
+  - [x] Archive/unarchive tricounts
+- [x] **Expense Controller**
+  - [x] CRUD endpoints for expenses (`GET /expenses`, `POST /expenses`, etc.)
+  - [x] Support for equal/unequal splits
+  - [x] Multi-currency support (fetch exchange rates)
+- [x] **Repayment Controller**
+  - [x] Suggest repayments (minimize transactions)
+  - [x] Mark repayments as completed
+- [x] **User Controller**
+  - [x] Clerk integration (validate JWT, sync users)
+  - [x] User profile management
+
+### Business Logic
+- [ ] **Split Service**
+  - [ ] Equal/unequal split calculations
+  - [ ] Rounding logic for splits
+- [ ] **Repayment Service**
+  - [x] Greedy algorithm for repayment suggestions
+  - [ ] Conflict resolution for concurrent repayments
+- [ ] **Currency Service**
+  - [x] Fetch exchange rates (ExchangeRate-API)
+  - [ ] Store rates with expenses
 
 ### Business Logic
 - [ ] **Split Service**
@@ -30,12 +41,12 @@
   - [ ] Store rates with expenses
 
 ### Infrastructure
+- [x] **Clerk Auth**
+  - [x] JWT validation middleware
+  - [ ] User role management (admin/member)
 - [ ] **Docker Compose**
   - [ ] PostgreSQL, backend, and frontend services
   - [ ] Health checks and environment variables
-- [ ] **Clerk Auth**
-  - [ ] JWT validation middleware
-  - [ ] User role management
 - [ ] **Offline Sync**
   - [ ] Queue actions when offline
   - [ ] Conflict resolution on reconnect
