@@ -22,7 +22,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=Tricount;Username=postgres;Password=postgres"
     ports:
-      - "5000:8080"
+      - "5134:8080"
     depends_on:
       db:
         condition: service_healthy
