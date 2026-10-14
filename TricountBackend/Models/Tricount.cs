@@ -6,7 +6,8 @@ namespace TricountBackend.Models
 {
     public class Tricount
     {
-        public Tricount() {
+        public Tricount()
+        {
             Users = new List<User>();
             Expenses = new List<Expense>();
         }
