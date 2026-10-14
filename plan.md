@@ -44,9 +44,9 @@
 - [x] **Clerk Auth**
   - [x] JWT validation middleware
   - [ ] User role management (admin/member)
-- [ ] **Docker Compose**
-  - [ ] PostgreSQL, backend, and frontend services
-  - [ ] Health checks and environment variables
+- [x] **Docker Compose**
+  - [x] PostgreSQL + backend services
+  - [x] Health checks and environment variables
 - [ ] **Offline Sync**
   - [ ] Queue actions when offline
   - [ ] Conflict resolution on reconnect
@@ -107,8 +107,6 @@
   - [ ] Backend, frontend, PostgreSQL, Clerk
 - [ ] **CI/CD**
   - [ ] GitHub Actions for build/test/deploy
-- [ ] **Hosting**
-  - [ ] Cloud provider (AWS/GCP) or self-hosted
 
 ---
 
