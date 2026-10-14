@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TricountBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate_Stable : Migration
+    public partial class N_M_Relationship : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,23 +27,16 @@ namespace TricountBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Participants",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    TricountId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Participants", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Participants_Tricounts_TricountId",
-                        column: x => x.TricountId,
-                        principalTable: "Tricounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,7 +47,7 @@ namespace TricountBackend.Migrations
                     TricountId = table.Column<Guid>(type: "uuid", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    OriginalCurrency = table.Column<string>(type: "text", nullable: false),
+                    Currency = table.Column<string>(type: "text", nullable: true),
                     ExchangeRate = table.Column<decimal>(type: "numeric", nullable: true),
                     PaidById = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -63,15 +56,15 @@ namespace TricountBackend.Migrations
                 {
                     table.PrimaryKey("PK_Expenses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Expenses_Participants_PaidById",
-                        column: x => x.PaidById,
-                        principalTable: "Participants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Expenses_Tricounts_TricountId",
                         column: x => x.TricountId,
                         principalTable: "Tricounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Expenses_Users_PaidById",
+                        column: x => x.PaidById,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -93,21 +86,45 @@ namespace TricountBackend.Migrations
                 {
                     table.PrimaryKey("PK_Repayments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Repayments_Participants_FromId",
-                        column: x => x.FromId,
-                        principalTable: "Participants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Repayments_Participants_ToId",
-                        column: x => x.ToId,
-                        principalTable: "Participants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Repayments_Tricounts_TricountId",
                         column: x => x.TricountId,
                         principalTable: "Tricounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Repayments_Users_FromId",
+                        column: x => x.FromId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Repayments_Users_ToId",
+                        column: x => x.ToId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TricountUser",
+                columns: table => new
+                {
+                    TricountsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UsersId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TricountUser", x => new { x.TricountsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_TricountUser_Tricounts_TricountsId",
+                        column: x => x.TricountsId,
+                        principalTable: "Tricounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TricountUser_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -131,9 +148,9 @@ namespace TricountBackend.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExpenseSplits_Participants_ParticipantId",
+                        name: "FK_ExpenseSplits_Users_ParticipantId",
                         column: x => x.ParticipantId,
-                        principalTable: "Participants",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -159,11 +176,6 @@ namespace TricountBackend.Migrations
                 column: "ParticipantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participants_TricountId",
-                table: "Participants",
-                column: "TricountId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Repayments_FromId",
                 table: "Repayments",
                 column: "FromId");
@@ -177,6 +189,11 @@ namespace TricountBackend.Migrations
                 name: "IX_Repayments_TricountId",
                 table: "Repayments",
                 column: "TricountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TricountUser_UsersId",
+                table: "TricountUser",
+                column: "UsersId");
         }
 
         /// <inheritdoc />
@@ -189,13 +206,16 @@ namespace TricountBackend.Migrations
                 name: "Repayments");
 
             migrationBuilder.DropTable(
+                name: "TricountUser");
+
+            migrationBuilder.DropTable(
                 name: "Expenses");
 
             migrationBuilder.DropTable(
-                name: "Participants");
+                name: "Tricounts");
 
             migrationBuilder.DropTable(
-                name: "Tricounts");
+                name: "Users");
         }
     }
 }

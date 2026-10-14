@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TricountBackend.Models
 {
-    public class Participant
+    public class User
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -15,9 +15,6 @@ namespace TricountBackend.Models
         [Required]
         public required string Name { get; set; }
 
-        [Required]
-        public Guid TricountId { get; set; }
-
-        public required Tricount Tricount { get; set; }
+        public List<Tricount> Tricounts { get; set; } = new List<Tricount>();
     }
 }

@@ -6,6 +6,11 @@ namespace TricountBackend.Models
 {
     public class Tricount
     {
+        public Tricount() {
+            Users = new List<User>();
+            Expenses = new List<Expense>();
+        }
+
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -19,8 +24,8 @@ namespace TricountBackend.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public List<Participant> Participants { get; set; } = new List<Participant>();
+        public List<User> Users { get; set; }
 
-        public List<Expense> Expenses { get; set; } = new List<Expense>();
+        public List<Expense> Expenses { get; set; }
     }
 }

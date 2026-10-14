@@ -12,8 +12,8 @@ using TricountBackend.Data;
 namespace TricountBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261014125208_InitialCreate_Stable")]
-    partial class InitialCreate_Stable
+    [Migration("20261014140800_N_M_Relationship")]
+    partial class N_M_Relationship
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,16 +37,15 @@ namespace TricountBackend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<decimal?>("ExchangeRate")
                         .HasColumnType("numeric");
-
-                    b.Property<string>("OriginalCurrency")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<Guid>("PaidById")
                         .HasColumnType("uuid");
@@ -85,30 +84,6 @@ namespace TricountBackend.Migrations
                     b.HasIndex("ParticipantId");
 
                     b.ToTable("ExpenseSplits");
-                });
-
-            modelBuilder.Entity("TricountBackend.Models.Participant", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TricountId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TricountId");
-
-                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("TricountBackend.Models.Repayment", b =>
@@ -174,9 +149,43 @@ namespace TricountBackend.Migrations
                     b.ToTable("Tricounts");
                 });
 
+            modelBuilder.Entity("TricountBackend.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TricountUser", b =>
+                {
+                    b.Property<Guid>("TricountsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("TricountsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("TricountUser");
+                });
+
             modelBuilder.Entity("TricountBackend.Models.Expense", b =>
                 {
-                    b.HasOne("TricountBackend.Models.Participant", "PaidBy")
+                    b.HasOne("TricountBackend.Models.User", "PaidBy")
                         .WithMany()
                         .HasForeignKey("PaidById")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -201,7 +210,7 @@ namespace TricountBackend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TricountBackend.Models.Participant", "Participant")
+                    b.HasOne("TricountBackend.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("ParticipantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -209,29 +218,18 @@ namespace TricountBackend.Migrations
 
                     b.Navigation("Expense");
 
-                    b.Navigation("Participant");
-                });
-
-            modelBuilder.Entity("TricountBackend.Models.Participant", b =>
-                {
-                    b.HasOne("TricountBackend.Models.Tricount", "Tricount")
-                        .WithMany("Participants")
-                        .HasForeignKey("TricountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tricount");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TricountBackend.Models.Repayment", b =>
                 {
-                    b.HasOne("TricountBackend.Models.Participant", "From")
+                    b.HasOne("TricountBackend.Models.User", "From")
                         .WithMany()
                         .HasForeignKey("FromId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TricountBackend.Models.Participant", "To")
+                    b.HasOne("TricountBackend.Models.User", "To")
                         .WithMany()
                         .HasForeignKey("ToId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -250,6 +248,21 @@ namespace TricountBackend.Migrations
                     b.Navigation("Tricount");
                 });
 
+            modelBuilder.Entity("TricountUser", b =>
+                {
+                    b.HasOne("TricountBackend.Models.Tricount", null)
+                        .WithMany()
+                        .HasForeignKey("TricountsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TricountBackend.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TricountBackend.Models.Expense", b =>
                 {
                     b.Navigation("Splits");
@@ -258,8 +271,6 @@ namespace TricountBackend.Migrations
             modelBuilder.Entity("TricountBackend.Models.Tricount", b =>
                 {
                     b.Navigation("Expenses");
-
-                    b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618
         }

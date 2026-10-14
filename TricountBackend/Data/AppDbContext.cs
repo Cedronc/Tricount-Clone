@@ -8,14 +8,14 @@ namespace TricountBackend.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             Tricounts = Set<Tricount>();
-            Participants = Set<Participant>();
+            Users = Set<User>();
             Expenses = Set<Expense>();
             ExpenseSplits = Set<ExpenseSplit>();
             Repayments = Set<Repayment>();
         }
 
         public DbSet<Tricount> Tricounts { get; set; }
-        public DbSet<Participant> Participants { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseSplit> ExpenseSplits { get; set; }
         public DbSet<Repayment> Repayments { get; set; }
@@ -23,9 +23,8 @@ namespace TricountBackend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Tricount>()
-                .HasMany(t => t.Participants)
-                .WithOne(p => p.Tricount)
-                .HasForeignKey(p => p.TricountId);
+                .HasMany(t => t.Users)
+                .WithMany(u => u.Tricounts);
 
             modelBuilder.Entity<Tricount>()
                 .HasMany(t => t.Expenses)
@@ -43,7 +42,7 @@ namespace TricountBackend.Data
                 .HasForeignKey(s => s.ExpenseId);
 
             modelBuilder.Entity<ExpenseSplit>()
-                .HasOne(s => s.Participant)
+                .HasOne(s => s.User)
                 .WithMany()
                 .HasForeignKey(s => s.ParticipantId);
 

@@ -21,15 +21,14 @@ namespace TricountBackend.Models
         [Required]
         public decimal Amount { get; set; }
 
-        [Required]
-        public string OriginalCurrency { get; set; } = "EUR";
+        public string? Currency { get; set; } = "EUR";
 
         public decimal? ExchangeRate { get; set; }
 
         [Required]
         public Guid PaidById { get; set; }
 
-        public required Participant PaidBy { get; set; }
+        public required User PaidBy { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
