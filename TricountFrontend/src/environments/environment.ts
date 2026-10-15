@@ -4,5 +4,6 @@
 
 export const environment = {
   production: false,
-  clerkPublishableKey: 'pk_test_bGl2aW5nLW11c2tveC0yODEwLmNsZXJrLmFjY291bnRzLmRldiQ' // Add your Clerk publishable key here
+  clerkPublishableKey: 'pk_test_bGl2aW5nLW11c2tveC0yODEwLmNsZXJrLmFjY291bnRzLmRldiQ', // Add your Clerk publishable key here
+  apiUrl: 'http://localhost:5134'
 };

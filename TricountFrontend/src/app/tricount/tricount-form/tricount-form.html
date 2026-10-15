@@ -29,21 +29,6 @@
       </select>
     </div>
 
-    <div class="form-group">
-      <label>Participants ({{ tricount.participants.length }}/{{ availableUsers.length }})</label>
-       <div *ngIf="errors['participants']" class="error">{{ errors['participants'] }}</div>
-      <div class="participants-list">
-        <div *ngFor="let user of availableUsers" class="participant">
-          <label>
-            <input type="checkbox"
-                   [checked]="isParticipantSelected(user.id)"
-                   (change)="toggleParticipant(user.id)">
-            {{ user.name }} ({{ user.email }})
-          </label>
-        </div>
-      </div>
-    </div>
-
     <div class="form-actions">
       <button type="button" class="cancel-btn" routerLink="/tricounts">Cancel</button>
       <button type="submit" class="submit-btn">Create Tricount</button>

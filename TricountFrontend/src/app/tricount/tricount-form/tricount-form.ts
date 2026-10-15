@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from '../../core/services/api';
 import { Tricount } from '../models/tricount.model';
+import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/services/user';
 
 @Component({
   selector: 'app-tricount-form',
@@ -14,13 +16,14 @@ import { Tricount } from '../models/tricount.model';
 })
 export class TricountForm implements OnInit {
   tricount: Omit<Tricount, 'id' | 'createdAt' | 'updatedAt'> = {
-    name: '',
-    emoji: '💰',
-    currency: 'EUR',
-    participants: [],
-    totalSpending: 0,
-    userBalance: 0,
-    isArchived: false
+      name: '',
+      emoji: '💰',
+      currency: 'EUR',
+      userIds: [],
+      totalSpending: 0,
+      userBalance: 0,
+      isArchived: false,
+      participants: []
   };
 
   availableUsers: { id: string; name: string; email: string }[] = [];
@@ -30,6 +33,7 @@ export class TricountForm implements OnInit {
 
   constructor(
     private apiService: ApiService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -51,34 +55,18 @@ export class TricountForm implements OnInit {
       isValid = false;
     }
 
-    if (this.tricount.participants.length < 2) {
-      this.errors.participants = 'At least 2 participants are required';
-      isValid = false;
-    }
-
     return isValid;
   }
 
-  toggleParticipant(userId: string): void {
-    const index = this.tricount.participants.findIndex(p => p.id === userId);
-    if (index === -1) {
-      const user = this.availableUsers.find(u => u.id === userId);
-      if (user) this.tricount.participants.push(user);
-    } else {
-      this.tricount.participants.splice(index, 1);
-    }
-  }
-
-  isParticipantSelected(userId: string): boolean {
-    return this.tricount.participants.some(p => p.id === userId);
-  }
-
-  onSubmit(): void {
+  async onSubmit() {
     if (!this.validate()) return;
+    this.authService.getRealUser().subscribe((user : User) => {
+        this.tricount.userIds.push(user.id)
+        this.apiService.createTricount(this.tricount).subscribe({
+          next: (tricount) => this.router.navigate(['/tricounts', tricount.id]),
+          error: (err) => console.error('Failed to create tricount:', err)
+        });
+    })
 
-    this.apiService.createTricount(this.tricount).subscribe({
-      next: (tricount) => this.router.navigate(['/tricounts', tricount.id]),
-      error: (err) => console.error('Failed to create tricount:', err)
-    });
   }
 }
