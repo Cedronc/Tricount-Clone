@@ -1,0 +1,76 @@
+.repayment-suggestions {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.loading, .error {
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.error {
+  color: red;
+}
+
+.repayment-list {
+  margin-top: 20px;
+}
+
+.repayment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.repayment-item.completed {
+  opacity: 0.6;
+}
+
+.repayment-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.payer, .recipient {
+  font-weight: bold;
+}
+
+.amount {
+  margin-left: auto;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.complete-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.complete-btn:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 600px) {
+  .repayment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .repayment-details {
+    flex-wrap: wrap;
+  }
+}

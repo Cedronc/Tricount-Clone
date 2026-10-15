@@ -1,0 +1,62 @@
+<div class="expense-form">
+  <h2>Add Expense</h2>
+  <form (ngSubmit)="submit()">
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" id="description" [(ngModel)]="description" name="description" required>
+    </div>
+
+    <div class="form-group">
+      <label for="amount">Amount</label>
+      <input type="number" id="amount" [(ngModel)]="amount" name="amount" min="0" step="0.01" required>
+    </div>
+
+    <div class="form-group">
+      <label>Payer</label>
+      <div class="participant-list">
+        <div *ngFor="let participant of allParticipants" class="participant">
+          <label>
+            <input type="radio" name="payer" [(ngModel)]="payer" [value]="participant" required>
+            {{ participant.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Participants</label>
+      <div class="participant-list">
+        <div *ngFor="let participant of allParticipants" class="participant">
+          <label>
+            <input type="checkbox" [checked]="participants.some(p => p.id === participant.id)" (change)="toggleParticipant(participant.id)">
+            {{ participant.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Split Method</label>
+      <div class="split-method">
+        <label>
+          <input type="radio" name="splitMethod" [(ngModel)]="splitMethod" value="equal"> Equal
+        </label>
+        <label>
+          <input type="radio" name="splitMethod" [(ngModel)]="splitMethod" value="custom"> Custom
+        </label>
+      </div>
+    </div>
+
+    <div *ngIf="splitMethod === 'custom'" class="form-group custom-splits">
+      <label>Custom Splits</label>
+      <div *ngFor="let participant of participants" class="split-row">
+        <span>{{ participant.name }}</span>
+        <input type="number" [(ngModel)]="customSplits[participant.id]" [name]="'split-' + participant.id" min="0" step="0.01" required>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <button type="submit" class="submit-btn">Save Expense</button>
+  </form>
+</div>

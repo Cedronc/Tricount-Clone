@@ -1,0 +1,31 @@
+<div class="tricount-list">
+  <div class="header">
+    <h1>Tricounts</h1>
+    <div class="actions">
+      <button (click)="toggleArchived()" class="filter-btn">
+        {{ showArchived ? 'Hide Archived' : 'Show Archived' }}
+      </button>
+      <a routerLink="/tricounts/new" class="create-btn">Create Tricount</a>
+    </div>
+  </div>
+
+  <div *ngIf="filteredTricounts.length === 0" class="empty-state">
+    <p>No tricounts found.</p>
+  </div>
+
+  <div class="tricount-grid">
+    <div *ngFor="let tricount of filteredTricounts" class="tricount-card" [class.archived]="tricount.isArchived">
+      <a [routerLink]="['/tricounts', tricount.id]">
+        <div class="tricount-emoji">{{ tricount.emoji }}</div>
+        <div class="tricount-info">
+          <h3>{{ tricount.name }}</h3>
+          <p class="participants">{{ tricount.participants.length }} participants</p>
+          <p class="total-spending">Total: {{ tricount.totalSpending | currency:tricount.currency }}</p>
+          <p class="user-balance" [class.positive]="tricount.userBalance >= 0" [class.negative]="tricount.userBalance < 0">
+            {{ tricount.userBalance >= 0 ? '+' : '' }}{{ tricount.userBalance | currency:tricount.currency }}
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

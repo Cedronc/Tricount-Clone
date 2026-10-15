@@ -1,0 +1,30 @@
+<div class="expense-list-container">
+  <div class="expense-controls">
+    <input
+      type="text"
+      [(ngModel)]="filterText"
+      (input)="applyFilter()"
+      placeholder="Filter expenses..."
+      class="filter-input" />
+    <button (click)="toggleSort()" class="sort-btn">
+      Sort: {{ sortDirection === 'asc' ? 'Oldest' : 'Newest' }}
+    </button>
+  </div>
+
+  <div *ngIf="filteredExpenses.length === 0" class="no-expenses">
+    No expenses found.
+  </div>
+
+  <div class="expense-list">
+    <div *ngFor="let expense of filteredExpenses" class="expense-item">
+      <div class="expense-header">
+        <h3>{{ expense.description }}</h3>
+        <span class="expense-amount">{{ expense.amount | currency }}</span>
+      </div>
+      <div class="expense-meta">
+        <span>Paid by {{ expense.payer.name }} on {{ expense.date | date }}</span>
+        <span>{{ expense.participants.length }} participants</span>
+      </div>
+    </div>
+  </div>
+</div>

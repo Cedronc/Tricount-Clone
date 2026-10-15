@@ -1,1 +1,6 @@
+<header>
+  <a *clerkSignedOut routerLink="/sign-in">Sign in</a>
+  <a *clerkSignedIn routerLink="/dashboard">Dashboard</a>
+  <clerk-user-button *clerkSignedIn />
+</header>
 <router-outlet />

@@ -1,0 +1,19 @@
+<div class="repayment-suggestions">
+  <h2>Repayment Suggestions</h2>
+
+  <div *ngIf="loading" class="loading">Loading repayments...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && !error" class="repayment-list">
+    <div *ngFor="let repayment of repayments" class="repayment-item" [class.completed]="repayment.completed">
+      <div class="repayment-details">
+        <span class="payer">{{ repayment.payer.name }}</span>
+        <span class="arrow">→</span>
+        <span class="recipient">{{ repayment.recipient.name }}</span>
+        <span class="amount">{{ repayment.amount | currency:tricount?.currency }}</span>
+      </div>
+      <button *ngIf="!repayment.completed" (click)="markAsCompleted(repayment)" class="complete-btn">Mark as Completed</button>
+    </div>
+  </div>
+</div>

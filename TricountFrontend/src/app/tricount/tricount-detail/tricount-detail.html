@@ -1,0 +1,45 @@
+<div class="tricount-detail-container" *ngIf="!isLoading && tricount">
+  <div class="tricount-header">
+    <div class="tricount-title">
+      <span class="tricount-emoji">{{ tricount.emoji }}</span>
+      <h1>{{ tricount.name }}</h1>
+    </div>
+    <div class="tricount-meta">
+      <span>{{ tricount.participants.length }} participants</span>
+      <span>{{ totalSpending | currency:tricount.currency }}</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button
+      class="tab"
+      [class.active]="activeTab === 'expenses'"
+      (click)="activeTab = 'expenses'">
+      Expenses
+    </button>
+    <button
+      class="tab"
+      [class.active]="activeTab === 'balances'"
+      (click)="activeTab = 'balances'">
+      Balances
+    </button>
+  </div>
+
+  <div class="tab-content">
+    <div *ngIf="activeTab === 'expenses'">
+      <app-expense-list [expenses]="expenses"></app-expense-list>
+      <button class="add-expense-btn" routerLink="new-expense">Add Expense</button>
+    </div>
+    <div *ngIf="activeTab === 'balances'">
+      <p>Balances view will be implemented here.</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="loading">
+  Loading...
+</div>
+
+<div *ngIf="!isLoading && !tricount" class="error">
+  Tricount not found.
+</div>

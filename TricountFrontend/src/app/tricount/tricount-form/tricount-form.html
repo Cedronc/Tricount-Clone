@@ -1,0 +1,52 @@
+<div class="tricount-form">
+  <h1>Create Tricount</h1>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Group Name</label>
+      <input type="text" id="name" [(ngModel)]="tricount.name" name="name" placeholder="e.g., Summer Trip">
+      <div *ngIf="errors.name" class="error">{{ errors.name }}</div>
+    </div>
+
+    <div class="form-group">
+      <label>Emoji</label>
+      <div class="emoji-picker">
+        <button *ngFor="let emoji of availableEmojis"
+                type="button"
+                [class.active]="tricount.emoji === emoji"
+                (click)="tricount.emoji = emoji">
+          {{ emoji }}
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="currency">Currency</label>
+      <select id="currency" [(ngModel)]="tricount.currency" name="currency">
+        <option *ngFor="let currency of availableCurrencies" [value]="currency">
+          {{ currency }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Participants ({{ tricount.participants.length }}/{{ availableUsers.length }})</label>
+      <div *ngIf="errors.participants" class="error">{{ errors.participants }}</div>
+      <div class="participants-list">
+        <div *ngFor="let user of availableUsers" class="participant">
+          <label>
+            <input type="checkbox"
+                   [checked]="isParticipantSelected(user.id)"
+                   (change)="toggleParticipant(user.id)">
+            {{ user.name }} ({{ user.email }})
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="cancel-btn" routerLink="/tricounts">Cancel</button>
+      <button type="submit" class="submit-btn">Create Tricount</button>
+    </div>
+  </form>
+</div>
