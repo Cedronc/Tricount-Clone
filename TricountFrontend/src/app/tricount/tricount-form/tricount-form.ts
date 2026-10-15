@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from '../../core/services/api';
-import { AuthService } from '../../core/services/auth';
 import { Tricount } from '../models/tricount.model';
 
 @Component({
@@ -31,17 +30,16 @@ export class TricountForm implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService,
     private router: Router
   ) {}
 
   async ngOnInit(): Promise<void> {
-    const users = await this.authService.getUsers();
-    this.availableUsers = users.map(user => ({
-      id: user.id,
-      name: `${user.firstName} ${user.lastName}`,
-      email: user.emailAddresses[0]?.emailAddress || ''
-    }));
+    // const users = await this.authService.getUsers();
+    // this.availableUsers = users.map(user => ({
+    //   id: user.id,
+    //   name: `${user.firstName} ${user.lastName}`,
+    //   email: user.emailAddresses[0]?.emailAddress || ''
+    // }));
   }
 
   validate(): boolean {

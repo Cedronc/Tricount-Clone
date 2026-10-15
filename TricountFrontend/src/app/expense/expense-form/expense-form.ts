@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../core/services/api';
 import { StateService } from '../../core/services/state';
-import { AuthService } from '../../core/services/auth';
 import { Tricount } from '../../tricount/models/tricount.model';
 import { Expense } from '../models/expense.model';
 
@@ -29,7 +28,6 @@ export class ExpenseForm implements OnInit {
   constructor(
     private api: ApiService,
     private state: StateService,
-    private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
