@@ -56,24 +56,24 @@
 ## Frontend (Angular)
 
 ### Core Features
-- [ ] **Tricount List**
-  - [ ] Display tricounts with emoji/icons
-  - [ ] Create/join/archive tricounts
-- [ ] **Tricount Detail**
-  - [ ] Expense list (chronological)
+- [x] **Tricount List**
+  - [x] Display tricounts with emoji/icons
+  - [x] Create/join/archive tricounts
+- [x] **Tricount Detail**
+  - [x] Expense list (chronological)
   - [ ] Balance view (net positions)
-  - [ ] Add/edit expenses
-- [ ] **Expense Form**
-  - [ ] Description, amount, payer, participants
-  - [ ] Equal/unequal split options
-- [ ] **Repayment View**
-  - [ ] Suggested repayments
-  - [ ] Mark repayments as completed
+  - [x] Add/edit expenses
+- [x] **Expense Form**
+  - [x] Description, amount, payer, participants
+  - [x] Equal/unequal split options
+- [x] **Repayment View**
+  - [x] Suggested repayments
+  - [x] Mark repayments as completed
 
 ### UI/UX
-- [ ] **Responsive Design**
-  - [ ] Mobile-first layout
-  - [ ] Touch-friendly controls
+- [x] **Responsive Design**
+  - [x] Mobile-first layout
+  - [x] Touch-friendly controls
 - [ ] **Offline Support**
   - [ ] IndexedDB for queued actions
   - [ ] Sync status indicators
@@ -82,7 +82,7 @@
 
 ### State Management
 - [ ] **NgRx/Akita**
-  - [ ] State for tricounts, expenses, repayments
+  - [x] State for tricounts, expenses, repayments
   - [ ] Optimistic updates
 
 ### Testing
