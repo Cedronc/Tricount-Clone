@@ -50,6 +50,7 @@ bazel-out/
 .env.development.local
 .env.production.local
 .env.test.local
+.angular
 
 # IDEs and editors
 .idea/
@@ -116,4 +117,4 @@ secrets.json
 appsettings.Development.json
 
 # Ignore only the root appsettings.Development.json
-!**/appsettings.Development.json
+!**/appsettings.Development.json.angular
