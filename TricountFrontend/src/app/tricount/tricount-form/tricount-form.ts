@@ -14,18 +14,20 @@ import { Tricount } from '../models/tricount.model';
   templateUrl: './tricount-form.html',
 })
 export class TricountForm implements OnInit {
-  tricount: Omit<Tricount, 'id' | 'createdAt' | 'updatedAt' | 'totalSpending' | 'userBalance'> = {
+  tricount: Omit<Tricount, 'id' | 'createdAt' | 'updatedAt'> = {
     name: '',
     emoji: '💰',
     currency: 'EUR',
     participants: [],
+    totalSpending: 0,
+    userBalance: 0,
     isArchived: false
   };
 
   availableUsers: { id: string; name: string; email: string }[] = [];
   availableEmojis = ['💰', '🏠', '🚗', '🌍', '🎉', '🍔', '🏖️', '🎓', '🏥', '🐶'];
   availableCurrencies = ['EUR', 'USD', 'GBP', 'JPY', 'CAD', 'AUD'];
-  errors: Record<string, string> = {};
+  errors: { name?: string; participants?: string } = {};
 
   constructor(
     private apiService: ApiService,
@@ -38,7 +40,7 @@ export class TricountForm implements OnInit {
     this.availableUsers = users.map(user => ({
       id: user.id,
       name: `${user.firstName} ${user.lastName}`,
-      email: user.emailAddresses[0]?.emailAddress
+      email: user.emailAddresses[0]?.emailAddress || ''
     }));
   }
 

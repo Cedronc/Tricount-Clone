@@ -5,7 +5,7 @@
     <div class="form-group">
       <label for="name">Group Name</label>
       <input type="text" id="name" [(ngModel)]="tricount.name" name="name" placeholder="e.g., Summer Trip">
-      <div *ngIf="errors.name" class="error">{{ errors.name }}</div>
+       <div *ngIf="errors['name']" class="error">{{ errors['name'] }}</div>
     </div>
 
     <div class="form-group">
@@ -31,7 +31,7 @@
 
     <div class="form-group">
       <label>Participants ({{ tricount.participants.length }}/{{ availableUsers.length }})</label>
-      <div *ngIf="errors.participants" class="error">{{ errors.participants }}</div>
+       <div *ngIf="errors['participants']" class="error">{{ errors['participants'] }}</div>
       <div class="participants-list">
         <div *ngFor="let user of availableUsers" class="participant">
           <label>

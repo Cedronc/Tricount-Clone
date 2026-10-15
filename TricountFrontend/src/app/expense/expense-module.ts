@@ -7,7 +7,6 @@ import { ExpenseForm } from './expense-form/expense-form';
 import { SharedModule } from '../shared/shared-module';
 
 @NgModule({
-  declarations: [ExpenseList, ExpenseDetail, ExpenseForm],
-  imports: [CommonModule, RouterModule, SharedModule]
+  imports: [CommonModule, RouterModule, SharedModule, ExpenseList, ExpenseForm],
 })
 export class ExpenseModule {}

@@ -1,17 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Clerk } from '@clerk/clerk-js';
+import { ClerkService } from 'ngx-clerk';
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  emailAddresses: { emailAddress: string }[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private clerk = new Clerk(import.meta.env.NG_APP_CLERK_PUBLISHABLE_KEY);
+  private mockUsers: User[] = [
+    {
+      id: '1',
+      firstName: 'John',
+      lastName: 'Doe',
+      emailAddresses: [{ emailAddress: 'john.doe@example.com' }]
+    },
+    {
+      id: '2',
+      firstName: 'Jane',
+      lastName: 'Smith',
+      emailAddresses: [{ emailAddress: 'jane.smith@example.com' }]
+    },
+    {
+      id: '3',
+      firstName: 'Bob',
+      lastName: 'Johnson',
+      emailAddresses: [{ emailAddress: 'bob.johnson@example.com' }]
+    }
+  ];
 
-  async getCurrentUser() {
-    return this.clerk.user;
+  async getCurrentUser(): Promise<User | null> {
+    return this.mockUsers[0] || null;
   }
 
-  async getUsers() {
-    return this.clerk.users.getUserList();
+  async getUsers(): Promise<User[]> {
+    return this.mockUsers;
   }
 }

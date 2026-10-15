@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ApiService } from '../../../core/services/api';
-import { StateService } from '../../../core/services/state';
-import { Tricount } from '../../models/tricount.model';
-import { Expense } from '../../../expense/models/expense.model';
+import { ApiService } from '../../../app/core/services/api';
+import { StateService } from '../../../app/core/services/state';
+import { Tricount } from '../../../app/tricount/models/tricount.model';
+import { Expense } from '../../../app/expense/models/expense.model';
+import { ExpenseList } from '../../../app/expense/expense-list/expense-list';
 
 @Component({
-  imports: [CommonModule, RouterModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule, ExpenseList],
   selector: 'app-tricount-detail',
   styleUrl: './tricount-detail.css',
   templateUrl: './tricount-detail.html',
@@ -35,7 +38,7 @@ export class TricountDetail implements OnInit {
 
   loadTricount(id: string): void {
     this.apiService.getTricount(id).subscribe({
-      next: (tricount) => {
+      next: (tricount: Tricount) => {
         this.tricount = tricount;
         this.stateService.setCurrentTricount(tricount);
         this.loadExpenses(id);
@@ -48,7 +51,7 @@ export class TricountDetail implements OnInit {
 
   loadExpenses(tricountId: string): void {
     this.apiService.getExpenses(tricountId).subscribe({
-      next: (expenses) => {
+      next: (expenses: Expense[]) => {
         this.expenses = expenses;
         this.stateService.setExpenses(expenses);
         this.isLoading = false;

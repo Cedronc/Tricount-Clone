@@ -1,9 +1,11 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Expense } from '../../models/expense.model';
+import { FormsModule } from '@angular/forms';
+import { Expense } from '../models/expense.model';
 
 @Component({
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   selector: 'app-expense-list',
   styleUrl: './expense-list.css',
   templateUrl: './expense-list.html',
