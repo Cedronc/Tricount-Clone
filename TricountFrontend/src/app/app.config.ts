@@ -2,17 +2,19 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideClerk } from 'ngx-clerk';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { clerkAuthInterceptor } from './core/clerk-intercepter';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(),
     provideClerk({
-      publishableKey: 'pk_test_bGl2aW5nLW11c2tveC0yODEwLmNsZXJrLmFjY291bnRzLmRldiQ',
+      publishableKey: environment.clerkPublishableKey,
       signInUrl: '/sign-in',
       signUpUrl: '/sign-up',
     }),
-  ]
+    provideHttpClient(withInterceptors([clerkAuthInterceptor])),
+  ],
 };

@@ -51,31 +51,35 @@ namespace TricountBackend.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult<UserDTO>> SyncUserFromClerk([FromBody] CreateUserDTO dto)
+        public async Task<ActionResult<UserDTO>> SyncUserFromClerk(
+            [FromBody] CreateUserDTO dto)
         {
-            if (string.IsNullOrEmpty(dto.ClerkUserId) || string.IsNullOrEmpty(dto.Name))
-            {
-                return BadRequest();
-            }
+            var clerkUserId = User.FindFirstValue("sub");
 
-            var existingUser = await _db.Users.FirstOrDefaultAsync(u => u.UserId == dto.ClerkUserId);
+            if (string.IsNullOrEmpty(clerkUserId))
+                return Unauthorized();
+
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                return BadRequest();
+
+            var existingUser = await _db.Users
+                .FirstOrDefaultAsync(u => u.UserId == clerkUserId);
+
             if (existingUser != null)
             {
                 existingUser.Name = dto.Name;
-                _db.Users.Update(existingUser);
             }
             else
             {
-                var newUser = new User
+                _db.Users.Add(new User
                 {
-                    UserId = dto.ClerkUserId,
+                    UserId = clerkUserId,
                     Name = dto.Name
-                };
-                _db.Users.Add(newUser);
+                });
             }
 
             await _db.SaveChangesAsync();
+
             return Ok();
         }
 

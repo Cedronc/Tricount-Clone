@@ -1,20 +1,11 @@
-<div class="tricount-list">
-  <div class="header">
-    <h1>Tricounts</h1>
-    <div class="actions">
-      <button (click)="toggleArchived()" class="filter-btn">
-        {{ showArchived ? 'Hide Archived' : 'Show Archived' }}
-      </button>
-      <a routerLink="/tricounts/new" class="create-btn">Create Tricount</a>
-    </div>
-  </div>
+<div class="tricount-list" *ngIf="!isLoading">
 
-  <div *ngIf="filteredTricounts.length === 0" class="empty-state">
+  <div *ngIf="tricounts.length === 0" class="empty-state">
     <p>No tricounts found.</p>
   </div>
 
-  <div class="tricount-grid">
-    <div *ngFor="let tricount of filteredTricounts" class="tricount-card" [class.archived]="tricount.isArchived">
+  <div class="tricount-grid" *ngIf="tricounts.length > 0; else emptyState">
+    <div *ngFor="let tricount of tricounts" class="tricount-card" [class.archived]="tricount.isArchived">
       <a [routerLink]="['/tricounts', tricount.id]">
         <div class="tricount-emoji">{{ tricount.emoji }}</div>
         <div class="tricount-info">
@@ -29,3 +20,12 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #emptyState>
+    <div class="empty-state">
+        <p>No tricounts found. Create one to get started!</p>
+    </div>
+</ng-template>
+
+<app-spinner *ngIf="isLoading"></app-spinner>

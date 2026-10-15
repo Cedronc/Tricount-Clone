@@ -58,20 +58,30 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // Configure JWT Authentication (Clerk)
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["Clerk:Authority"];
-        options.Audience = builder.Configuration["Clerk:Audience"];
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["Clerk:Authority"],
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["Clerk:Audience"],
-            ValidateLifetime = true
-        };
+        var authority = builder.Configuration["Clerk:Authority"]
+            ?? throw new InvalidOperationException(
+                "Clerk:Authority is not configured.");
+
+        options.Authority = authority;
+        options.MapInboundClaims = false;
+
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = authority,
+
+                ValidateAudience = false,
+
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
     });
+
 
 var app = builder.Build();
 
@@ -98,11 +108,10 @@ if (app.Environment.IsDevelopment())
 else
     app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Use CORS policy
-app.UseCors("AllowFrontend");
 
 app.MapControllers();
 

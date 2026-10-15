@@ -1,9 +1,9 @@
-<header>
+<header style="padding: 20px; background: #eee; color: black;">
+  <p *clerkLoading>Clerk is loading...</p>
+
   <a *clerkSignedOut routerLink="/sign-in">Sign in</a>
-  <a *clerkSignedIn routerLink="/dashboard">Dashboard</a>
-  <clerk-user-button *clerkSignedIn />
+  <a *clerkSignedIn routerLink="/tricounts">Tricounts</a>
+  <clerk-user-button style="float:right;" *clerkSignedIn />
 </header>
 
 <router-outlet />
-
-{{ jwt }}
